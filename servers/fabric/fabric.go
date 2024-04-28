@@ -13,7 +13,7 @@ const (
 
 type Fabric struct{}
 
-func (v *Fabric) Versions() ([]string, error) {
+func (f *Fabric) Versions() ([]string, error) {
 	versionManifest, err := fetchVersionManifest()
 	if err != nil {
 		return nil, err
@@ -22,7 +22,7 @@ func (v *Fabric) Versions() ([]string, error) {
 	return versionManifest.toStringSlice(), nil
 }
 
-func (v *Fabric) DownloadURL(version string) (string, error) {
+func (f *Fabric) DownloadURL(version string) (string, error) {
 	versionManifest, err := fetchVersionManifest()
 	if err != nil {
 		return "", err

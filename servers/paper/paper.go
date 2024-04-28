@@ -14,7 +14,7 @@ const (
 
 type Paper struct{}
 
-func (v *Paper) Versions() ([]string, error) {
+func (p *Paper) Versions() ([]string, error) {
 	versionManifest, err := fetchVersionManifest()
 	if err != nil {
 		return nil, err
@@ -23,8 +23,8 @@ func (v *Paper) Versions() ([]string, error) {
 	return versionManifest.Versions, nil
 }
 
-func (v *Paper) DownloadURL(version string) (string, error) {
-	versions, err := v.Versions()
+func (p *Paper) DownloadURL(version string) (string, error) {
+	versions, err := p.Versions()
 	if err != nil {
 		return "", err
 	}
