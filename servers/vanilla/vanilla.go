@@ -47,27 +47,27 @@ func (v *Vanilla) DownloadURL(version string) (string, error) {
 	return versionPackage.Downloads.Server.URL, nil
 }
 
-func fetchVersionManifest() (*versionManifest, error) {
+func fetchVersionManifest() (versionManifest, error) {
 	var versionManifest versionManifest
 
 	err := helpers.FetchAndDecodeJSON(versionManifestURL, &versionManifest)
 	if err != nil {
-		return nil, err
+		return versionManifest, err
 	}
 
 	index := versionManifest.indexOf(firstVersionWithServer) + 1
 	versionManifest.Versions = versionManifest.Versions[:index]
 
-	return &versionManifest, nil
+	return versionManifest, nil
 }
 
-func fetchVersionPackage(url string) (*versionPackage, error) {
+func fetchVersionPackage(url string) (versionPackage, error) {
 	var versionPackage versionPackage
 
 	err := helpers.FetchAndDecodeJSON(url, &versionPackage)
 	if err != nil {
-		return nil, err
+		return versionPackage, err
 	}
 
-	return &versionPackage, nil
+	return versionPackage, nil
 }
