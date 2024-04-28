@@ -15,3 +15,12 @@ type versionPackage struct {
 		} `json:"server"`
 	} `json:"downloads"`
 }
+
+func (m *versionManifest) indexOf(version string) int {
+	for i, v := range m.Versions {
+		if v.ID == version {
+			return i
+		}
+	}
+	return -1
+}
