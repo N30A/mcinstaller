@@ -24,3 +24,13 @@ func (m *versionManifest) indexOf(version string) int {
 	}
 	return -1
 }
+
+func (m *versionManifest) toStringSlice() []string {
+	versions := make([]string, len(m.Versions))
+
+	for i := 0; i < len(m.Versions); i++ {
+		versions[i] = m.Versions[i].ID
+	}
+
+	return versions
+}
