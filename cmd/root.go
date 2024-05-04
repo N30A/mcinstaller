@@ -26,4 +26,5 @@ func init() {
 		listServerVersionsCmd,
 		installCmd,
 	)
+	rootCmd.CompletionOptions.DisableDefaultCmd = true
 }
