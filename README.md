@@ -5,41 +5,32 @@ mcinstaller is a command-line tool for installing minecraft servers. It allows y
 **Usage:**
 
 ```
-mcinstaller <command> [options]
+Usage:
+  mcinstaller [command]
 
-list servers
-  List all supported minecraft servers.
+Available Commands:
+  help        Help about any command
+  install     Install a minecraft server
+  servers     List supported servers
+  versions    List versions for the specified server
 
-list versions <server>
-  List all supported versions for the specified server.
-
-install <server> <version> <server-dir>
-  Install a minecraft server with the supplied information.
-
-help
-  Show this help message.
+Flags:
+  -h, --help   help for mcinstaller
 ```
 
 **Examples:**
 
-List all supported servers:
+List supported servers:
 ```sh
-$ mcinstaller list servers
+mcinstaller servers
 ```
 
 List available versions for a server:
 ```sh
-$ mcinstaller list versions vanilla
+mcinstaller versions vanilla
 ```
 
 Install a minecraft server:
 ```sh
-$ mcinstaller install vanilla 1.17.1 /path/to/server-directory
-```
-
-**Notes:**
-```
-The <server> argument should be a valid server (e.g. vanilla or paper).
-The <version> argument should be a valid version number for the selected server.
-The <server-dir> argument should be the path where you want to install the server.
+mcinstaller install vanilla 1.20 /path/to/server-directory
 ```
