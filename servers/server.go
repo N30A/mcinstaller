@@ -2,6 +2,7 @@ package servers
 
 import (
 	"fmt"
+	"strings"
 
 	fabric "github.com/n30a/mcinstaller/servers/fabric"
 	forge "github.com/n30a/mcinstaller/servers/forge"
@@ -9,11 +10,45 @@ import (
 	vanilla "github.com/n30a/mcinstaller/servers/vanilla"
 )
 
-var SupportedServers = []string{
-	"vanilla",
-	"paper",
-	"fabric",
-	"forge",
+type SupportedServer int
+
+const (
+	Vanilla SupportedServer = iota
+	Paper
+	Fabric
+	Forge
+)
+
+func (s SupportedServer) String() string {
+	switch s {
+	case Vanilla:
+		return "Vanilla"
+	case Paper:
+		return "Paper"
+	case Fabric:
+		return "Fabric"
+	case Forge:
+		return "Forge"
+	default:
+		return "Unknown"
+	}
+}
+
+func ParseServerType(server string) (SupportedServer, error) {
+	server = strings.ToLower(server)
+
+	switch server {
+	case "vanilla":
+		return Vanilla, nil
+	case "paper":
+		return Paper, nil
+	case "fabric":
+		return Fabric, nil
+	case "forge":
+		return Forge, nil
+	default:
+		return -1, fmt.Errorf("unknown server type: %s", server)
+	}
 }
 
 type Server interface {
@@ -21,26 +56,22 @@ type Server interface {
 	DownloadURL(version string) (string, error)
 }
 
-func NewServer(server string) (Server, error) {
-	var serverType Server
-
+func ServerFactory(server SupportedServer) (Server, error) {
 	switch server {
 
-	case SupportedServers[0]:
-		serverType = &vanilla.Vanilla{}
+	case Vanilla:
+		return &vanilla.Vanilla{}, nil
 
-	case SupportedServers[1]:
-		serverType = &paper.Paper{}
+	case Paper:
+		return &paper.Paper{}, nil
 
-	case SupportedServers[2]:
-		serverType = &fabric.Fabric{}
+	case Fabric:
+		return &fabric.Fabric{}, nil
 
-	case SupportedServers[3]:
-		serverType = &forge.Forge{}
+	case Forge:
+		return &forge.Forge{}, nil
 
 	default:
 		return nil, fmt.Errorf("unsupported server '%s'", server)
 	}
-
-	return serverType, nil
 }
