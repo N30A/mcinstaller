@@ -4,7 +4,7 @@ VERSION := 2.1
 ifeq ($(OS),Windows_NT)
 	BINARY := $(NAME)-$(VERSION)-win.exe
 else
-	BINARY := $(NAME)-$(VERSION)-linux.exe
+	BINARY := $(NAME)-$(VERSION)-linux
 endif
 
 build: 
