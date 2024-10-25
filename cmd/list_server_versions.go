@@ -17,21 +17,24 @@ var listServerVersionsCmd = &cobra.Command{
 }
 
 func listServerVersions(cmd *cobra.Command, args []string) error {
-	server := args[0]
-
-	serverType, err := servers.NewServer(server)
+	serverType, err := servers.ParseServerType(args[0])
 	if err != nil {
 		return err
 	}
 
-	versions, err := serverType.Versions()
+	server, err := servers.ServerFactory(serverType)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Listing all versions for %s...\n", server)
+	versions, err := server.Versions()
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Listing all versions for %s...\n", serverType)
 	for _, version := range versions {
-		fmt.Print(version + " ")
+		fmt.Println(version)
 	}
 
 	return nil

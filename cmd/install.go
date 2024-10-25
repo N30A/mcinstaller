@@ -19,22 +19,27 @@ var installCmd = &cobra.Command{
 }
 
 func install(cmd *cobra.Command, args []string) error {
-	server, version, path := args[0], args[1], args[2]
+	serverArg, versionArg, pathArg := args[0], args[1], args[2]
 
-	serverType, err := servers.NewServer(server)
+	serverType, err := servers.ParseServerType(serverArg)
 	if err != nil {
 		return err
 	}
 
-	fmt.Printf("Fetching %s server download url for version %s\n", server, version)
-	url, err := serverType.DownloadURL(version)
+	server, err := servers.ServerFactory(serverType)
 	if err != nil {
 		return err
 	}
 
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		fmt.Printf("Directory %s does not exist, creating it\n", path)
-		err = os.MkdirAll(path, os.ModePerm)
+	fmt.Printf("Fetching %s server download url for version %s\n", serverType, versionArg)
+	url, err := server.DownloadURL(versionArg)
+	if err != nil {
+		return err
+	}
+
+	if _, err := os.Stat(pathArg); os.IsNotExist(err) {
+		fmt.Printf("Directory %s does not exist, creating it\n", pathArg)
+		err = os.MkdirAll(pathArg, os.ModePerm)
 		if err != nil {
 			return err
 		}
@@ -43,14 +48,14 @@ func install(cmd *cobra.Command, args []string) error {
 	var fileName string
 	var suffix string
 
-	if server == servers.SupportedServers[3] {
+	if serverType == servers.Forge {
 		suffix = "-installer"
 	}
 
-	fileName = fmt.Sprintf("%s-%s%s.jar", server, version, suffix)
-	filePath := filepath.Join(path, fileName)
+	fileName = fmt.Sprintf("%s-%s%s.jar", serverType, versionArg, suffix)
+	filePath := filepath.Join(pathArg, fileName)
 
-	fmt.Printf("Downloading %s version %s to %s\n", server, version, filePath)
+	fmt.Printf("Downloading %s version %s to %s\n", serverType, versionArg, filePath)
 	err = helpers.DownloadFile(url, filePath)
 	if err != nil {
 		return err
