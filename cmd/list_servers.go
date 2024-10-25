@@ -16,7 +16,9 @@ var listServersCmd = &cobra.Command{
 
 func listServers(cmd *cobra.Command, args []string) {
 	fmt.Println("Listing all supported servers...")
-	for _, server := range servers.SupportedServers {
+
+	for server := servers.Vanilla; server <= servers.Forge; server++ {
 		fmt.Print(server, " ")
 	}
+	fmt.Println()
 }
